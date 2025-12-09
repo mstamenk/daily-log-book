@@ -27,7 +27,7 @@
           Daily Focus 3
         </h1>
         <p class="text-sm text-slate-500 mt-1">
-          One must-do, one quick win, one optional. Plus small tasks and a brain dump.
+          One must-do, one quick win, one optional. Plus small tasks, deadlines and a brain dump.
         </p>
       </div>
       <div class="text-right text-xs text-slate-400">
@@ -63,13 +63,27 @@
             ▶
           </button>
         </div>
-        <div class="sm:ml-auto">
-          <label class="block text-xs text-slate-500 mb-1" for="date-input">Jump to date</label>
-          <input
-            id="date-input"
-            type="date"
-            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
-          />
+
+        <div class="sm:ml-auto flex flex-col sm:flex-row sm:items-center gap-3">
+          <div>
+            <label class="block text-xs text-slate-500 mb-1" for="date-input">Jump to date</label>
+            <input
+              id="date-input"
+              type="date"
+              class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            />
+          </div>
+          <div>
+            <label class="block text-xs text-slate-500 mb-1" for="font-size-select">Font size</label>
+            <select
+              id="font-size-select"
+              class="rounded-lg border border-slate-300 bg-white px-2 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            >
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
         </div>
       </div>
     </section>
@@ -79,7 +93,7 @@
       <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <span class="font-medium text-slate-700">Summary</span>
         <span id="summary-text" class="text-slate-600">
-          Focus: 0/3 tasks checked · Small tasks: 0/0 done · Brain dump: empty
+          Focus: 0/3 tasks checked · Small tasks: 0/0 done · Deadlines: 0/0 done · Brain dump: empty
         </span>
       </div>
     </section>
@@ -173,7 +187,7 @@
       </div>
     </section>
 
-    <!-- Small tasks + brain dump -->
+    <!-- Small tasks + Important deadlines -->
     <section class="mt-8 grid md:grid-cols-2 gap-8">
       <!-- Small tasks -->
       <div>
@@ -199,21 +213,45 @@
         </div>
       </div>
 
-      <!-- Brain dump -->
+      <!-- Important deadlines -->
       <div>
-        <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-2">
-          Brain dump / Name a stress
-        </h2>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase">
+            Important deadlines
+          </h2>
+          <button
+            id="deadline-add-btn"
+            class="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+          >
+            + Add
+          </button>
+        </div>
         <p class="text-xs text-slate-500 mb-2">
-          Offload worries, to-dos, or random thoughts. They don’t have to be tidy.
+          Grants, talks, reviews… Tick them once they’re past or done.
         </p>
-        <textarea
-          id="brain-dump"
-          rows="10"
-          placeholder="e.g. I'm worried about the ERC deadline and HHH analysis overlap. Possible next step: block 2x 25-minute sessions just for ERC today."
-          class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
-        ></textarea>
+        <div
+          id="deadlines-list"
+          class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 max-h-80 overflow-y-auto"
+        >
+          <!-- deadlines go here -->
+        </div>
       </div>
+    </section>
+
+    <!-- Brain dump: full width -->
+    <section class="mt-8">
+      <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-2">
+        Brain dump / Name a stress
+      </h2>
+      <p class="text-xs text-slate-500 mb-2">
+        Offload worries, to-dos, or random thoughts. They don’t have to be tidy.
+      </p>
+      <textarea
+        id="brain-dump"
+        rows="8"
+        placeholder="e.g. I'm worried about the ERC deadline and HHH analysis overlap. Possible next step: block 2x 25-minute sessions just for ERC today."
+        class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+      ></textarea>
     </section>
 
     <!-- Reflection: Today / Tomorrow -->
@@ -254,7 +292,8 @@
 
       const state = {
         selectedDate: null, // 'YYYY-MM-DD'
-        days: {}, // date string -> dayData
+        days: {},           // date string -> dayData
+        settings: { fontSize: 'medium' },
       };
 
       // DOM references
@@ -265,6 +304,7 @@
       const nextBtn = document.getElementById('date-next-btn');
       const todayBtn = document.getElementById('date-today-btn');
       const summaryTextSpan = document.getElementById('summary-text');
+      const fontSizeSelect = document.getElementById('font-size-select');
 
       const mainMustRow = document.getElementById('main-must-row');
       const mainQuickRow = document.getElementById('main-quick-row');
@@ -279,10 +319,20 @@
 
       const smallTasksList = document.getElementById('small-tasks-list');
       const smallAddBtn = document.getElementById('small-add-btn');
-      const brainDumpTextarea = document.getElementById('brain-dump');
 
+      const deadlinesList = document.getElementById('deadlines-list');
+      const deadlineAddBtn = document.getElementById('deadline-add-btn');
+
+      const brainDumpTextarea = document.getElementById('brain-dump');
       const finishedTodayTextarea = document.getElementById('finished-today');
       const startTomorrowTextarea = document.getElementById('start-tomorrow');
+
+      function makeId() {
+        return (
+          Date.now().toString(36) +
+          Math.random().toString(36).slice(2, 7)
+        );
+      }
 
       function formatDateLocal(date) {
         const year = date.getFullYear();
@@ -324,6 +374,7 @@
             optional: { text: '', done: false },
           },
           smallTasks: [],
+          importantDeadlines: [],
           brainDump: '',
           finishedToday: '',
           startTomorrow: '',
@@ -335,17 +386,21 @@
           const raw = localStorage.getItem(STORAGE_KEY);
           if (!raw) {
             state.days = {};
+            state.settings = { fontSize: 'medium' };
             return;
           }
           const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object' && parsed.days) {
-            state.days = parsed.days;
+          if (parsed && typeof parsed === 'object') {
+            state.days = parsed.days || {};
+            state.settings = parsed.settings || { fontSize: 'medium' };
           } else {
             state.days = {};
+            state.settings = { fontSize: 'medium' };
           }
         } catch (e) {
           console.warn('Failed to load planner data', e);
           state.days = {};
+          state.settings = { fontSize: 'medium' };
         }
       }
 
@@ -353,7 +408,10 @@
         try {
           localStorage.setItem(
             STORAGE_KEY,
-            JSON.stringify({ days: state.days })
+            JSON.stringify({
+              days: state.days,
+              settings: state.settings,
+            })
           );
         } catch (e) {
           console.warn('Failed to save planner data', e);
@@ -367,6 +425,7 @@
           const day = state.days[dateStr];
           if (!day.main) day.main = createEmptyDay().main;
           if (!day.smallTasks) day.smallTasks = [];
+          if (!day.importantDeadlines) day.importantDeadlines = [];
           if (typeof day.brainDump !== 'string') day.brainDump = '';
           if (typeof day.finishedToday !== 'string') day.finishedToday = '';
           if (typeof day.startTomorrow !== 'string') day.startTomorrow = '';
@@ -383,7 +442,44 @@
         return state.days[dateStr];
       }
 
+      function carryForwardTasks(fromDate, toDate) {
+        const fromDay = getDay(fromDate);
+        const toDay = getDay(toDate);
+
+        ['smallTasks', 'importantDeadlines'].forEach((listName) => {
+          if (!Array.isArray(fromDay[listName])) return;
+          if (!Array.isArray(toDay[listName])) toDay[listName] = [];
+
+          fromDay[listName].forEach((task) => {
+            if (task.done) return;
+            const text = (task.text || '').trim();
+            if (!text) return;
+
+            const exists = toDay[listName].some(
+              (t) => (t.text || '').trim() === text
+            );
+            if (!exists) {
+              toDay[listName].push({
+                id: makeId(),
+                text: text,
+                done: false,
+              });
+            }
+          });
+        });
+      }
+
+      function maybeCarryForward(oldDate, newDate) {
+        if (!oldDate) return;
+        if (newDate <= oldDate) return; // only roll forward to later days
+        carryForwardTasks(oldDate, newDate);
+      }
+
       function setSelectedDate(dateStr) {
+        const old = state.selectedDate;
+        if (old && dateStr !== old) {
+          maybeCarryForward(old, dateStr);
+        }
         state.selectedDate = dateStr;
         ensureDay(dateStr);
         render();
@@ -412,6 +508,16 @@
       }
 
       function styleSmallTaskRow(rowEl, task) {
+        const textEl = rowEl.querySelector('input[type="text"]');
+        if (!textEl) return;
+        if (task.done) {
+          textEl.classList.add('line-through', 'text-slate-400');
+        } else {
+          textEl.classList.remove('line-through', 'text-slate-400');
+        }
+      }
+
+      function styleDeadlineRow(rowEl, task) {
         const textEl = rowEl.querySelector('input[type="text"]');
         if (!textEl) return;
         if (task.done) {
@@ -493,6 +599,80 @@
         });
       }
 
+      function renderDeadlines(day) {
+        deadlinesList.innerHTML = '';
+        if (!Array.isArray(day.importantDeadlines)) {
+          day.importantDeadlines = [];
+        }
+
+        if (day.importantDeadlines.length === 0) {
+          const placeholder = document.createElement('p');
+          placeholder.className = 'text-xs text-slate-400 py-2';
+          placeholder.textContent = 'No deadlines yet. Add one above.';
+          deadlinesList.appendChild(placeholder);
+          return;
+        }
+
+        day.importantDeadlines.forEach((task) => {
+          const row = document.createElement('div');
+          row.className =
+            'flex items-center gap-2 py-1.5 border-b border-slate-200 last:border-b-0';
+          row.dataset.id = task.id;
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className =
+            'mt-0.5 rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500';
+          checkbox.checked = !!task.done;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = task.text || '';
+          input.placeholder = 'Deadline (e.g. ERC draft to co-authors, 2026-01-15)...';
+          input.className =
+            'flex-1 rounded-lg border border-transparent bg-transparent px-1 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-sky-400 focus:bg-white';
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.type = 'button';
+          deleteBtn.textContent = '✕';
+          deleteBtn.title = 'Remove deadline';
+          deleteBtn.className =
+            'ml-1 inline-flex items-center justify-center text-[11px] text-slate-400 hover:text-red-500 px-1';
+
+          checkbox.addEventListener('change', function () {
+            const day = getDay(state.selectedDate);
+            task.done = !!checkbox.checked;
+            saveStore();
+            styleDeadlineRow(row, task);
+            renderSummary(day);
+          });
+
+          input.addEventListener('input', function () {
+            const day = getDay(state.selectedDate);
+            task.text = input.value;
+            saveStore();
+            renderSummary(day);
+          });
+
+          deleteBtn.addEventListener('click', function () {
+            const day = getDay(state.selectedDate);
+            day.importantDeadlines = day.importantDeadlines.filter(
+              (t) => t.id !== task.id
+            );
+            saveStore();
+            renderDeadlines(day);
+            renderSummary(day);
+          });
+
+          row.appendChild(checkbox);
+          row.appendChild(input);
+          row.appendChild(deleteBtn);
+          deadlinesList.appendChild(row);
+
+          styleDeadlineRow(row, task);
+        });
+      }
+
       function renderBrainDump(day) {
         brainDumpTextarea.value = day.brainDump || '';
       }
@@ -527,6 +707,13 @@
           ? day.smallTasks.filter((t) => t.done).length
           : 0;
 
+        const totalDead = Array.isArray(day.importantDeadlines)
+          ? day.importantDeadlines.length
+          : 0;
+        const doneDead = totalDead
+          ? day.importantDeadlines.filter((t) => t.done).length
+          : 0;
+
         const brainStatus = (day.brainDump || '').trim().length
           ? 'written'
           : 'empty';
@@ -540,6 +727,10 @@
           doneSmall +
           '/' +
           totalSmall +
+          ' done · Deadlines: ' +
+          doneDead +
+          '/' +
+          totalDead +
           ' done · Brain dump: ' +
           brainStatus;
       }
@@ -549,6 +740,7 @@
         renderDateLabels();
         renderMain(day);
         renderSmallTasks(day);
+        renderDeadlines(day);
         renderBrainDump(day);
         renderReflection(day);
         renderSummary(day);
@@ -559,9 +751,7 @@
         if (!Array.isArray(day.smallTasks)) day.smallTasks = [];
 
         const newTask = {
-          id:
-            Date.now().toString(36) +
-            Math.random().toString(36).slice(2, 7),
+          id: makeId(),
           text: '',
           done: false,
         };
@@ -572,6 +762,30 @@
 
         setTimeout(() => {
           const row = smallTasksList.querySelector(
+            'div[data-id="' + newTask.id + '"]'
+          );
+          if (!row) return;
+          const input = row.querySelector('input[type="text"]');
+          if (input) input.focus();
+        }, 0);
+      }
+
+      function addDeadline() {
+        const day = getDay(state.selectedDate);
+        if (!Array.isArray(day.importantDeadlines)) day.importantDeadlines = [];
+
+        const newTask = {
+          id: makeId(),
+          text: '',
+          done: false,
+        };
+        day.importantDeadlines.push(newTask);
+        saveStore();
+        renderDeadlines(day);
+        renderSummary(day);
+
+        setTimeout(() => {
+          const row = deadlinesList.querySelector(
             'div[data-id="' + newTask.id + '"]'
           );
           if (!row) return;
@@ -620,9 +834,34 @@
         });
       }
 
+      function applyFontSize() {
+        const setting = (state.settings && state.settings.fontSize) || 'medium';
+        let px;
+        if (setting === 'small') px = 15;
+        else if (setting === 'large') px = 18;
+        else px = 16; // medium default
+        document.documentElement.style.fontSize = px + 'px';
+      }
+
+      function initFontSizeUI() {
+        if (!fontSizeSelect) return;
+        fontSizeSelect.value = state.settings.fontSize || 'medium';
+        applyFontSize();
+
+        fontSizeSelect.addEventListener('change', function () {
+          state.settings.fontSize = fontSizeSelect.value || 'medium';
+          applyFontSize();
+          saveStore();
+        });
+      }
+
       function initOtherHandlers() {
         smallAddBtn.addEventListener('click', function () {
           addSmallTask();
+        });
+
+        deadlineAddBtn.addEventListener('click', function () {
+          addDeadline();
         });
 
         brainDumpTextarea.addEventListener('input', function () {
@@ -672,6 +911,7 @@
         ensureDay(today);
         initMainHandlers();
         initOtherHandlers();
+        initFontSizeUI();
         render();
       }
 
