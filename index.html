@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Focus 3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['system-ui','-apple-system','BlinkMacSystemFont','"Segoe UI"','sans-serif'],
+            mono: ['ui-monospace','SFMono-Regular','Menlo','Monaco','Consolas','"Liberation Mono"','"Courier New"','monospace'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center px-4 py-8">
+  <div class="w-full max-w-3xl border border-slate-200 rounded-3xl bg-white shadow-sm px-5 py-6 sm:px-8 sm:py-8">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div>
+        <h1 class="text-lg sm:text-xl font-semibold tracking-tight">
+          Daily Focus 3
+        </h1>
+        <p class="text-xs text-slate-500 mt-1">
+          One must-do, one quick win, one optional. Plus small tasks and a brain dump.
+        </p>
+      </div>
+      <div class="text-right text-[11px] text-slate-400">
+        <p id="date-human-label" class="font-medium text-slate-600"></p>
+        <p>All data stays on this device.</p>
+      </div>
+    </header>
+
+    <!-- Date navigation -->
+    <section class="mt-5 border-t border-slate-200 pt-4">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+        <div class="flex items-center gap-2 text-[11px] text-slate-600">
+          <span class="font-medium text-slate-700">Day:</span>
+          <span id="date-short-label" class="px-2 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700"></span>
+        </div>
+        <div class="flex items-center gap-2 text-[11px]">
+          <button
+            id="date-prev-btn"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-2.5 py-1 hover:bg-slate-50 text-slate-700"
+          >
+            ◀
+          </button>
+          <button
+            id="date-today-btn"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-slate-50 text-slate-700"
+          >
+            Today
+          </button>
+          <button
+            id="date-next-btn"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-2.5 py-1 hover:bg-slate-50 text-slate-700"
+          >
+            ▶
+          </button>
+        </div>
+        <div class="sm:ml-auto">
+          <label class="block text-[11px] text-slate-500 mb-1" for="date-input">Jump to date</label>
+          <input
+            id="date-input"
+            type="date"
+            class="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary strip -->
+    <section class="mt-4">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <span class="font-medium text-slate-700">Summary</span>
+        <span id="summary-text" class="text-slate-600">
+          Focus: 0/3 tasks checked · Small tasks: 0/0 done · Brain dump: empty
+        </span>
+      </div>
+    </section>
+
+    <!-- Focus 3 section -->
+    <section class="mt-6">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase">
+          Focus for today
+        </h2>
+        <p class="text-[11px] text-slate-500">
+          Keep it realistic. One clear win is enough.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-3">
+        <!-- Must-do -->
+        <div id="main-must-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <input
+              id="main-must-done"
+              type="checkbox"
+              class="rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500"
+            />
+            <div class="flex flex-col">
+              <span class="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+                To be done
+              </span>
+              <span class="text-[11px] text-slate-500">
+                If nothing else, do this.
+              </span>
+            </div>
+          </div>
+          <input
+            id="main-must-text"
+            type="text"
+            placeholder="e.g. finish ERC introduction section"
+            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          />
+        </div>
+
+        <!-- Quick win -->
+        <div id="main-quick-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <input
+              id="main-quick-done"
+              type="checkbox"
+              class="rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500"
+            />
+            <div class="flex flex-col">
+              <span class="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+                Quick win
+              </span>
+              <span class="text-[11px] text-slate-500">
+                Small task that makes you feel on top.
+              </span>
+            </div>
+          </div>
+          <input
+            id="main-quick-text"
+            type="text"
+            placeholder="e.g. reply to X about HHH plots"
+            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          />
+        </div>
+
+        <!-- Optional -->
+        <div id="main-optional-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2">
+          <div class="flex items-center gap-2">
+            <input
+              id="main-optional-done"
+              type="checkbox"
+              class="rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500"
+            />
+            <div class="flex flex-col">
+              <span class="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+                Optional
+              </span>
+              <span class="text-[11px] text-slate-500">
+                Nice to have, not mandatory.
+              </span>
+            </div>
+          </div>
+          <input
+            id="main-optional-text"
+            type="text"
+            placeholder="e.g. tidy up SuperChic notes"
+            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Small tasks + brain dump -->
+    <section class="mt-7 grid md:grid-cols-2 gap-6">
+      <!-- Small tasks -->
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase">
+            Small tasks
+          </h2>
+          <button
+            id="small-add-btn"
+            class="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-slate-50"
+          >
+            + Add
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-500 mb-2">
+          Quick items under ~10 minutes. Good to sprinkle between focus blocks.
+        </p>
+        <div
+          id="small-tasks-list"
+          class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 max-h-72 overflow-y-auto"
+        >
+          <!-- tasks go here -->
+        </div>
+      </div>
+
+      <!-- Brain dump -->
+      <div>
+        <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-2">
+          Brain dump / Name a stress
+        </h2>
+        <p class="text-[11px] text-slate-500 mb-2">
+          Offload worries, to-dos, or random thoughts. They don’t have to be tidy.
+        </p>
+        <textarea
+          id="brain-dump"
+          rows="8"
+          placeholder="e.g. I'm worried about the ERC deadline and HHH analysis overlap. Possible next step: block 2x 25-minute sessions just for ERC today."
+          class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- Reflection: Today / Tomorrow -->
+    <section class="mt-7">
+      <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-3">
+        Wrap-up
+      </h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label for="finished-today" class="block text-[11px] font-medium text-slate-700 mb-1">
+            Today I finished:
+          </label>
+          <textarea
+            id="finished-today"
+            rows="5"
+            placeholder="e.g. Completed the ERC introduction, fixed the SuperChic bug, and went for a 30-minute walk."
+            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          ></textarea>
+        </div>
+        <div>
+          <label for="start-tomorrow" class="block text-[11px] font-medium text-slate-700 mb-1">
+            Tomorrow, I'll start with:
+          </label>
+          <textarea
+            id="start-tomorrow"
+            rows="5"
+            placeholder="e.g. First 25-minute block on HHH systematics, then 25 minutes on ERC methodology section."
+            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          ></textarea>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'daily_focus_3_planner_v1';
+
+      const state = {
+        selectedDate: null, // 'YYYY-MM-DD'
+        days: {}, // date string -> dayData
+      };
+
+      // DOM references
+      const dateHumanLabel = document.getElementById('date-human-label');
+      const dateShortLabel = document.getElementById('date-short-label');
+      const dateInput = document.getElementById('date-input');
+      const prevBtn = document.getElementById('date-prev-btn');
+      const nextBtn = document.getElementById('date-next-btn');
+      const todayBtn = document.getElementById('date-today-btn');
+      const summaryTextSpan = document.getElementById('summary-text');
+
+      const mainMustRow = document.getElementById('main-must-row');
+      const mainQuickRow = document.getElementById('main-quick-row');
+      const mainOptionalRow = document.getElementById('main-optional-row');
+
+      const mainMustDone = document.getElementById('main-must-done');
+      const mainMustText = document.getElementById('main-must-text');
+      const mainQuickDone = document.getElementById('main-quick-done');
+      const mainQuickText = document.getElementById('main-quick-text');
+      const mainOptionalDone = document.getElementById('main-optional-done');
+      const mainOptionalText = document.getElementById('main-optional-text');
+
+      const smallTasksList = document.getElementById('small-tasks-list');
+      const smallAddBtn = document.getElementById('small-add-btn');
+      const brainDumpTextarea = document.getElementById('brain-dump');
+
+      const finishedTodayTextarea = document.getElementById('finished-today');
+      const startTomorrowTextarea = document.getElementById('start-tomorrow');
+
+      function formatDateLocal(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+      }
+
+      function getTodayString() {
+        return formatDateLocal(new Date());
+      }
+
+      function dateStringToDate(str) {
+        const [y, m, d] = str.split('-').map(Number);
+        return new Date(y, m - 1, d);
+      }
+
+      function shiftDateString(str, deltaDays) {
+        const d = dateStringToDate(str);
+        d.setDate(d.getDate() + deltaDays);
+        return formatDateLocal(d);
+      }
+
+      function formatHumanDate(dateStr) {
+        const d = dateStringToDate(dateStr);
+        const optsLong = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+        const optsShort = { weekday: 'short', month: 'short', day: 'numeric' };
+        return {
+          long: d.toLocaleDateString(undefined, optsLong),
+          short: d.toLocaleDateString(undefined, optsShort),
+        };
+      }
+
+      function createEmptyDay() {
+        return {
+          main: {
+            must: { text: '', done: false },
+            quick: { text: '', done: false },
+            optional: { text: '', done: false },
+          },
+          smallTasks: [],
+          brainDump: '',
+          finishedToday: '',
+          startTomorrow: '',
+        };
+      }
+
+      function loadStore() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) {
+            state.days = {};
+            return;
+          }
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object' && parsed.days) {
+            state.days = parsed.days;
+          } else {
+            state.days = {};
+          }
+        } catch (e) {
+          console.warn('Failed to load planner data', e);
+          state.days = {};
+        }
+      }
+
+      function saveStore() {
+        try {
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ days: state.days })
+          );
+        } catch (e) {
+          console.warn('Failed to save planner data', e);
+        }
+      }
+
+      function ensureDay(dateStr) {
+        if (!state.days[dateStr]) {
+          state.days[dateStr] = createEmptyDay();
+        } else {
+          const day = state.days[dateStr];
+          if (!day.main) day.main = createEmptyDay().main;
+          if (!day.smallTasks) day.smallTasks = [];
+          if (typeof day.brainDump !== 'string') day.brainDump = '';
+          if (typeof day.finishedToday !== 'string') day.finishedToday = '';
+          if (typeof day.startTomorrow !== 'string') day.startTomorrow = '';
+          ['must', 'quick', 'optional'].forEach((k) => {
+            if (!day.main[k]) day.main[k] = { text: '', done: false };
+            if (typeof day.main[k].text !== 'string') day.main[k].text = '';
+            if (typeof day.main[k].done !== 'boolean') day.main[k].done = false;
+          });
+        }
+      }
+
+      function getDay(dateStr) {
+        ensureDay(dateStr);
+        return state.days[dateStr];
+      }
+
+      function setSelectedDate(dateStr) {
+        state.selectedDate = dateStr;
+        ensureDay(dateStr);
+        render();
+        saveStore();
+      }
+
+      function styleMainRow(rowEl, task) {
+        const baseClasses =
+          'rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2 transition-opacity';
+        rowEl.className = baseClasses + (task.done ? ' opacity-60' : '');
+      }
+
+      function renderMain(day) {
+        const main = day.main;
+
+        mainMustDone.checked = !!main.must.done;
+        mainMustText.value = main.must.text || '';
+        mainQuickDone.checked = !!main.quick.done;
+        mainQuickText.value = main.quick.text || '';
+        mainOptionalDone.checked = !!main.optional.done;
+        mainOptionalText.value = main.optional.text || '';
+
+        styleMainRow(mainMustRow, main.must);
+        styleMainRow(mainQuickRow, main.quick);
+        styleMainRow(mainOptionalRow, main.optional);
+      }
+
+      function styleSmallTaskRow(rowEl, task) {
+        const textEl = rowEl.querySelector('input[type="text"]');
+        if (!textEl) return;
+        if (task.done) {
+          textEl.classList.add('line-through', 'text-slate-400');
+        } else {
+          textEl.classList.remove('line-through', 'text-slate-400');
+        }
+      }
+
+      function renderSmallTasks(day) {
+        smallTasksList.innerHTML = '';
+        if (!Array.isArray(day.smallTasks)) {
+          day.smallTasks = [];
+        }
+
+        if (day.smallTasks.length === 0) {
+          const placeholder = document.createElement('p');
+          placeholder.className = 'text-[11px] text-slate-400 py-2';
+          placeholder.textContent = 'No small tasks yet. Add one above.';
+          smallTasksList.appendChild(placeholder);
+          return;
+        }
+
+        day.smallTasks.forEach((task) => {
+          const row = document.createElement('div');
+          row.className =
+            'flex items-center gap-2 py-1 border-b border-slate-200 last:border-b-0';
+          row.dataset.id = task.id;
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className =
+            'mt-0.5 rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500';
+          checkbox.checked = !!task.done;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = task.text || '';
+          input.placeholder = 'Small task...';
+          input.className =
+            'flex-1 rounded-lg border border-transparent bg-transparent px-1 py-1 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-sky-400 focus:bg-white';
+
+          const deleteBtn = document.createElement('button');
+          deleteBtn.type = 'button';
+          deleteBtn.textContent = '✕';
+          deleteBtn.title = 'Remove task';
+          deleteBtn.className =
+            'ml-1 inline-flex items-center justify-center text-[10px] text-slate-400 hover:text-red-500 px-1';
+
+          checkbox.addEventListener('change', function () {
+            const day = getDay(state.selectedDate);
+            task.done = !!checkbox.checked;
+            saveStore();
+            styleSmallTaskRow(row, task);
+            renderSummary(day);
+          });
+
+          input.addEventListener('input', function () {
+            const day = getDay(state.selectedDate);
+            task.text = input.value;
+            saveStore();
+            renderSummary(day);
+          });
+
+          deleteBtn.addEventListener('click', function () {
+            const day = getDay(state.selectedDate);
+            day.smallTasks = day.smallTasks.filter((t) => t.id !== task.id);
+            saveStore();
+            renderSmallTasks(day);
+            renderSummary(day);
+          });
+
+          row.appendChild(checkbox);
+          row.appendChild(input);
+          row.appendChild(deleteBtn);
+          smallTasksList.appendChild(row);
+
+          styleSmallTaskRow(row, task);
+        });
+      }
+
+      function renderBrainDump(day) {
+        brainDumpTextarea.value = day.brainDump || '';
+      }
+
+      function renderReflection(day) {
+        finishedTodayTextarea.value = day.finishedToday || '';
+        startTomorrowTextarea.value = day.startTomorrow || '';
+      }
+
+      function renderDateLabels() {
+        const dateStr = state.selectedDate;
+        const { long, short } = formatHumanDate(dateStr);
+        dateHumanLabel.textContent = long;
+        dateShortLabel.textContent = short;
+        dateInput.value = dateStr;
+      }
+
+      function renderSummary(day) {
+        if (!summaryTextSpan) return;
+
+        const main = day.main;
+        const focusTotal = 3;
+        let focusDone = 0;
+        ['must', 'quick', 'optional'].forEach((k) => {
+          if (main[k].done) focusDone += 1;
+        });
+
+        const totalSmall = Array.isArray(day.smallTasks)
+          ? day.smallTasks.length
+          : 0;
+        const doneSmall = totalSmall
+          ? day.smallTasks.filter((t) => t.done).length
+          : 0;
+
+        const brainStatus = (day.brainDump || '').trim().length
+          ? 'written'
+          : 'empty';
+
+        summaryTextSpan.textContent =
+          'Focus: ' +
+          focusDone +
+          '/' +
+          focusTotal +
+          ' tasks checked · Small tasks: ' +
+          doneSmall +
+          '/' +
+          totalSmall +
+          ' done · Brain dump: ' +
+          brainStatus;
+      }
+
+      function render() {
+        const day = getDay(state.selectedDate);
+        renderDateLabels();
+        renderMain(day);
+        renderSmallTasks(day);
+        renderBrainDump(day);
+        renderReflection(day);
+        renderSummary(day);
+      }
+
+      function addSmallTask() {
+        const day = getDay(state.selectedDate);
+        if (!Array.isArray(day.smallTasks)) day.smallTasks = [];
+
+        const newTask = {
+          id:
+            Date.now().toString(36) +
+            Math.random().toString(36).slice(2, 7),
+          text: '',
+          done: false,
+        };
+        day.smallTasks.push(newTask);
+        saveStore();
+        renderSmallTasks(day);
+        renderSummary(day);
+
+        setTimeout(() => {
+          const row = smallTasksList.querySelector(
+            'div[data-id="' + newTask.id + '"]'
+          );
+          if (!row) return;
+          const input = row.querySelector('input[type="text"]');
+          if (input) input.focus();
+        }, 0);
+      }
+
+      function initMainHandlers() {
+        const config = [
+          {
+            key: 'must',
+            textEl: mainMustText,
+            doneEl: mainMustDone,
+            rowEl: mainMustRow,
+          },
+          {
+            key: 'quick',
+            textEl: mainQuickText,
+            doneEl: mainQuickDone,
+            rowEl: mainQuickRow,
+          },
+          {
+            key: 'optional',
+            textEl: mainOptionalText,
+            doneEl: mainOptionalDone,
+            rowEl: mainOptionalRow,
+          },
+        ];
+
+        config.forEach(({ key, textEl, doneEl, rowEl }) => {
+          textEl.addEventListener('input', function () {
+            const day = getDay(state.selectedDate);
+            day.main[key].text = textEl.value;
+            saveStore();
+            renderSummary(day);
+          });
+
+          doneEl.addEventListener('change', function () {
+            const day = getDay(state.selectedDate);
+            day.main[key].done = !!doneEl.checked;
+            saveStore();
+            styleMainRow(rowEl, day.main[key]);
+            renderSummary(day);
+          });
+        });
+      }
+
+      function initOtherHandlers() {
+        smallAddBtn.addEventListener('click', function () {
+          addSmallTask();
+        });
+
+        brainDumpTextarea.addEventListener('input', function () {
+          const day = getDay(state.selectedDate);
+          day.brainDump = brainDumpTextarea.value;
+          saveStore();
+          renderSummary(day);
+        });
+
+        finishedTodayTextarea.addEventListener('input', function () {
+          const day = getDay(state.selectedDate);
+          day.finishedToday = finishedTodayTextarea.value;
+          saveStore();
+        });
+
+        startTomorrowTextarea.addEventListener('input', function () {
+          const day = getDay(state.selectedDate);
+          day.startTomorrow = startTomorrowTextarea.value;
+          saveStore();
+        });
+
+        prevBtn.addEventListener('click', function () {
+          const newDate = shiftDateString(state.selectedDate, -1);
+          setSelectedDate(newDate);
+        });
+
+        nextBtn.addEventListener('click', function () {
+          const newDate = shiftDateString(state.selectedDate, 1);
+          setSelectedDate(newDate);
+        });
+
+        todayBtn.addEventListener('click', function () {
+          const today = getTodayString();
+          setSelectedDate(today);
+        });
+
+        dateInput.addEventListener('change', function () {
+          if (!dateInput.value) return;
+          setSelectedDate(dateInput.value);
+        });
+      }
+
+      function init() {
+        loadStore();
+        const today = getTodayString();
+        state.selectedDate = today;
+        ensureDay(today);
+        initMainHandlers();
+        initOtherHandlers();
+        render();
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
+
