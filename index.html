@@ -18,57 +18,57 @@
     };
   </script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center px-4 py-8">
-  <div class="w-full max-w-3xl border border-slate-200 rounded-3xl bg-white shadow-sm px-5 py-6 sm:px-8 sm:py-8">
+<body class="min-h-screen bg-slate-50 text-slate-900 px-4 py-6">
+  <div class="w-full max-w-5xl mx-auto border border-slate-200 rounded-3xl bg-white shadow-sm px-6 py-6 sm:px-10 sm:py-8">
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <h1 class="text-lg sm:text-xl font-semibold tracking-tight">
+        <h1 class="text-xl sm:text-2xl font-semibold tracking-tight">
           Daily Focus 3
         </h1>
-        <p class="text-xs text-slate-500 mt-1">
+        <p class="text-sm text-slate-500 mt-1">
           One must-do, one quick win, one optional. Plus small tasks and a brain dump.
         </p>
       </div>
-      <div class="text-right text-[11px] text-slate-400">
+      <div class="text-right text-xs text-slate-400">
         <p id="date-human-label" class="font-medium text-slate-600"></p>
         <p>All data stays on this device.</p>
       </div>
     </header>
 
     <!-- Date navigation -->
-    <section class="mt-5 border-t border-slate-200 pt-4">
+    <section class="mt-6 border-t border-slate-200 pt-4">
       <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-        <div class="flex items-center gap-2 text-[11px] text-slate-600">
+        <div class="flex items-center gap-2 text-xs text-slate-600">
           <span class="font-medium text-slate-700">Day:</span>
-          <span id="date-short-label" class="px-2 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700"></span>
+          <span id="date-short-label" class="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700"></span>
         </div>
-        <div class="flex items-center gap-2 text-[11px]">
+        <div class="flex items-center gap-2 text-xs">
           <button
             id="date-prev-btn"
-            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-2.5 py-1 hover:bg-slate-50 text-slate-700"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-slate-50 text-slate-700"
           >
             ◀
           </button>
           <button
             id="date-today-btn"
-            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-slate-50 text-slate-700"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3.5 py-1 hover:bg-slate-50 text-slate-700"
           >
             Today
           </button>
           <button
             id="date-next-btn"
-            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-2.5 py-1 hover:bg-slate-50 text-slate-700"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-slate-50 text-slate-700"
           >
             ▶
           </button>
         </div>
         <div class="sm:ml-auto">
-          <label class="block text-[11px] text-slate-500 mb-1" for="date-input">Jump to date</label>
+          <label class="block text-xs text-slate-500 mb-1" for="date-input">Jump to date</label>
           <input
             id="date-input"
             type="date"
-            class="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           />
         </div>
       </div>
@@ -76,7 +76,7 @@
 
     <!-- Summary strip -->
     <section class="mt-4">
-      <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <span class="font-medium text-slate-700">Summary</span>
         <span id="summary-text" class="text-slate-600">
           Focus: 0/3 tasks checked · Small tasks: 0/0 done · Brain dump: empty
@@ -90,14 +90,14 @@
         <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase">
           Focus for today
         </h2>
-        <p class="text-[11px] text-slate-500">
+        <p class="text-xs text-slate-500">
           Keep it realistic. One clear win is enough.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-3">
+      <div class="grid md:grid-cols-3 gap-4">
         <!-- Must-do -->
-        <div id="main-must-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2">
+        <div id="main-must-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2">
           <div class="flex items-center gap-2">
             <input
               id="main-must-done"
@@ -105,10 +105,10 @@
               class="rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500"
             />
             <div class="flex flex-col">
-              <span class="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+              <span class="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 To be done
               </span>
-              <span class="text-[11px] text-slate-500">
+              <span class="text-xs text-slate-500">
                 If nothing else, do this.
               </span>
             </div>
@@ -117,12 +117,12 @@
             id="main-must-text"
             type="text"
             placeholder="e.g. finish ERC introduction section"
-            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           />
         </div>
 
         <!-- Quick win -->
-        <div id="main-quick-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2">
+        <div id="main-quick-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2">
           <div class="flex items-center gap-2">
             <input
               id="main-quick-done"
@@ -130,10 +130,10 @@
               class="rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500"
             />
             <div class="flex flex-col">
-              <span class="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+              <span class="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 Quick win
               </span>
-              <span class="text-[11px] text-slate-500">
+              <span class="text-xs text-slate-500">
                 Small task that makes you feel on top.
               </span>
             </div>
@@ -142,12 +142,12 @@
             id="main-quick-text"
             type="text"
             placeholder="e.g. reply to X about HHH plots"
-            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           />
         </div>
 
         <!-- Optional -->
-        <div id="main-optional-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2">
+        <div id="main-optional-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2">
           <div class="flex items-center gap-2">
             <input
               id="main-optional-done"
@@ -155,10 +155,10 @@
               class="rounded border-slate-400 bg-white text-sky-600 focus:ring-sky-500"
             />
             <div class="flex flex-col">
-              <span class="text-[11px] font-semibold uppercase tracking-wide text-slate-700">
+              <span class="text-xs font-semibold uppercase tracking-wide text-slate-700">
                 Optional
               </span>
-              <span class="text-[11px] text-slate-500">
+              <span class="text-xs text-slate-500">
                 Nice to have, not mandatory.
               </span>
             </div>
@@ -167,14 +167,14 @@
             id="main-optional-text"
             type="text"
             placeholder="e.g. tidy up SuperChic notes"
-            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           />
         </div>
       </div>
     </section>
 
     <!-- Small tasks + brain dump -->
-    <section class="mt-7 grid md:grid-cols-2 gap-6">
+    <section class="mt-8 grid md:grid-cols-2 gap-8">
       <!-- Small tasks -->
       <div>
         <div class="flex items-center justify-between gap-2 mb-2">
@@ -183,17 +183,17 @@
           </h2>
           <button
             id="small-add-btn"
-            class="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-slate-50"
+            class="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
           >
             + Add
           </button>
         </div>
-        <p class="text-[11px] text-slate-500 mb-2">
+        <p class="text-xs text-slate-500 mb-2">
           Quick items under ~10 minutes. Good to sprinkle between focus blocks.
         </p>
         <div
           id="small-tasks-list"
-          class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 max-h-72 overflow-y-auto"
+          class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 max-h-80 overflow-y-auto"
         >
           <!-- tasks go here -->
         </div>
@@ -204,44 +204,44 @@
         <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-2">
           Brain dump / Name a stress
         </h2>
-        <p class="text-[11px] text-slate-500 mb-2">
+        <p class="text-xs text-slate-500 mb-2">
           Offload worries, to-dos, or random thoughts. They don’t have to be tidy.
         </p>
         <textarea
           id="brain-dump"
-          rows="8"
+          rows="10"
           placeholder="e.g. I'm worried about the ERC deadline and HHH analysis overlap. Possible next step: block 2x 25-minute sessions just for ERC today."
-          class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+          class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
         ></textarea>
       </div>
     </section>
 
     <!-- Reflection: Today / Tomorrow -->
-    <section class="mt-7">
+    <section class="mt-8">
       <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-3">
         Wrap-up
       </h2>
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid md:grid-cols-2 gap-8">
         <div>
-          <label for="finished-today" class="block text-[11px] font-medium text-slate-700 mb-1">
+          <label for="finished-today" class="block text-xs font-medium text-slate-700 mb-1">
             Today I finished:
           </label>
           <textarea
             id="finished-today"
-            rows="5"
+            rows="6"
             placeholder="e.g. Completed the ERC introduction, fixed the SuperChic bug, and went for a 30-minute walk."
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           ></textarea>
         </div>
         <div>
-          <label for="start-tomorrow" class="block text-[11px] font-medium text-slate-700 mb-1">
+          <label for="start-tomorrow" class="block text-xs font-medium text-slate-700 mb-1">
             Tomorrow, I'll start with:
           </label>
           <textarea
             id="start-tomorrow"
-            rows="5"
+            rows="6"
             placeholder="e.g. First 25-minute block on HHH systematics, then 25 minutes on ERC methodology section."
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           ></textarea>
         </div>
       </div>
@@ -392,7 +392,7 @@
 
       function styleMainRow(rowEl, task) {
         const baseClasses =
-          'rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-3 flex flex-col gap-2 transition-opacity';
+          'rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2 transition-opacity';
         rowEl.className = baseClasses + (task.done ? ' opacity-60' : '');
       }
 
@@ -429,7 +429,7 @@
 
         if (day.smallTasks.length === 0) {
           const placeholder = document.createElement('p');
-          placeholder.className = 'text-[11px] text-slate-400 py-2';
+          placeholder.className = 'text-xs text-slate-400 py-2';
           placeholder.textContent = 'No small tasks yet. Add one above.';
           smallTasksList.appendChild(placeholder);
           return;
@@ -438,7 +438,7 @@
         day.smallTasks.forEach((task) => {
           const row = document.createElement('div');
           row.className =
-            'flex items-center gap-2 py-1 border-b border-slate-200 last:border-b-0';
+            'flex items-center gap-2 py-1.5 border-b border-slate-200 last:border-b-0';
           row.dataset.id = task.id;
 
           const checkbox = document.createElement('input');
@@ -452,14 +452,14 @@
           input.value = task.text || '';
           input.placeholder = 'Small task...';
           input.className =
-            'flex-1 rounded-lg border border-transparent bg-transparent px-1 py-1 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-sky-400 focus:bg-white';
+            'flex-1 rounded-lg border border-transparent bg-transparent px-1 py-1.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-sky-400 focus:bg-white';
 
           const deleteBtn = document.createElement('button');
           deleteBtn.type = 'button';
           deleteBtn.textContent = '✕';
           deleteBtn.title = 'Remove task';
           deleteBtn.className =
-            'ml-1 inline-flex items-center justify-center text-[10px] text-slate-400 hover:text-red-500 px-1';
+            'ml-1 inline-flex items-center justify-center text-[11px] text-slate-400 hover:text-red-500 px-1';
 
           checkbox.addEventListener('change', function () {
             const day = getDay(state.selectedDate);
