@@ -18,8 +18,10 @@
     };
   </script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 px-4 py-6">
-  <div class="w-full max-w-5xl mx-auto border border-slate-200 rounded-3xl bg-white shadow-sm px-6 py-6 sm:px-10 sm:py-8">
+<body class="min-h-screen bg-gradient-to-b from-sky-50 via-slate-50 to-slate-100 text-slate-900 px-4 py-6">
+  <div class="w-full max-w-5xl mx-auto border border-sky-100 rounded-3xl bg-white/90 shadow-lg shadow-sky-100/70 px-6 py-6 sm:px-10 sm:py-8">
+    <div class="h-1 w-24 rounded-full bg-gradient-to-r from-sky-400 to-sky-600 mb-4"></div>
+
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
@@ -41,24 +43,30 @@
       <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
         <div class="flex items-center gap-2 text-xs text-slate-600">
           <span class="font-medium text-slate-700">Day:</span>
-          <span id="date-short-label" class="px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700"></span>
+          <span
+            id="date-short-label"
+            class="px-3 py-1 rounded-full bg-sky-50/80 border border-sky-200 text-sky-800 shadow-sm"
+          ></span>
         </div>
         <div class="flex items-center gap-2 text-xs">
           <button
             id="date-prev-btn"
-            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-slate-50 text-slate-700"
+            type="button"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-sky-50 text-slate-700"
           >
             ◀
           </button>
           <button
             id="date-today-btn"
-            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3.5 py-1 hover:bg-slate-50 text-slate-700"
+            type="button"
+            class="inline-flex items-center justify-center rounded-full border border-sky-300 bg-sky-50/80 px-3.5 py-1 hover:bg-sky-100 text-sky-800 shadow-sm"
           >
             Today
           </button>
           <button
             id="date-next-btn"
-            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-slate-50 text-slate-700"
+            type="button"
+            class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-3 py-1 hover:bg-sky-50 text-slate-700"
           >
             ▶
           </button>
@@ -84,16 +92,41 @@
               <option value="large">Large</option>
             </select>
           </div>
+          <div class="pt-1 sm:pt-6">
+            <span class="block text-xs text-slate-500 mb-1">Backup</span>
+            <div class="flex items-center gap-2 text-xs">
+              <button
+                id="export-btn"
+                type="button"
+                class="inline-flex items-center justify-center rounded-full border border-sky-300 bg-sky-50/70 px-3 py-1 text-xs font-medium text-sky-800 hover:bg-sky-100"
+              >
+                Export
+              </button>
+              <button
+                id="import-btn"
+                type="button"
+                class="inline-flex items-center justify-center rounded-full border border-sky-300 bg-sky-50/70 px-3 py-1 text-xs font-medium text-sky-800 hover:bg-sky-100"
+              >
+                Import
+              </button>
+              <input
+                id="import-file"
+                type="file"
+                accept="application/json"
+                class="hidden"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Summary strip -->
     <section class="mt-4">
-      <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <span class="font-medium text-slate-700">Summary</span>
-        <span id="summary-text" class="text-slate-600">
-          Focus: 0/3 tasks checked · Small tasks: 0/0 done · Deadlines: 0/0 done · Brain dump: empty
+      <div class="rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50/90 via-slate-50/90 to-sky-50/90 px-4 py-3 text-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <span class="font-medium text-sky-900">Summary</span>
+        <span id="summary-text" class="text-slate-700">
+          Focus: 0/3 tasks checked · Small tasks: 0/0 done · Deadlines: 0/0 done · Brain dump: empty · Lab log: empty
         </span>
       </div>
     </section>
@@ -111,7 +144,7 @@
 
       <div class="grid md:grid-cols-3 gap-4">
         <!-- Must-do -->
-        <div id="main-must-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2">
+        <div id="main-must-row" class="rounded-2xl border border-sky-100 bg-sky-50/60 px-4 py-4 flex flex-col gap-2 transition-opacity">
           <div class="flex items-center gap-2">
             <input
               id="main-must-done"
@@ -136,7 +169,7 @@
         </div>
 
         <!-- Quick win -->
-        <div id="main-quick-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2">
+        <div id="main-quick-row" class="rounded-2xl border border-sky-100 bg-sky-50/60 px-4 py-4 flex flex-col gap-2 transition-opacity">
           <div class="flex items-center gap-2">
             <input
               id="main-quick-done"
@@ -161,7 +194,7 @@
         </div>
 
         <!-- Optional -->
-        <div id="main-optional-row" class="rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2">
+        <div id="main-optional-row" class="rounded-2xl border border-sky-100 bg-sky-50/60 px-4 py-4 flex flex-col gap-2 transition-opacity">
           <div class="flex items-center gap-2">
             <input
               id="main-optional-done"
@@ -197,7 +230,8 @@
           </h2>
           <button
             id="small-add-btn"
-            class="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            type="button"
+            class="inline-flex items-center gap-1 rounded-full border border-sky-300 bg-sky-50/70 px-3 py-1 text-xs font-medium text-sky-800 hover:bg-sky-100"
           >
             + Add
           </button>
@@ -207,7 +241,7 @@
         </p>
         <div
           id="small-tasks-list"
-          class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 max-h-80 overflow-y-auto"
+          class="rounded-2xl border border-sky-100 bg-sky-50/40 px-3 py-2 max-h-80 overflow-y-auto"
         >
           <!-- tasks go here -->
         </div>
@@ -221,7 +255,8 @@
           </h2>
           <button
             id="deadline-add-btn"
-            class="inline-flex items-center gap-1 rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            type="button"
+            class="inline-flex items-center gap-1 rounded-full border border-sky-300 bg-sky-50/70 px-3 py-1 text-xs font-medium text-sky-800 hover:bg-sky-100"
           >
             + Add
           </button>
@@ -231,7 +266,7 @@
         </p>
         <div
           id="deadlines-list"
-          class="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 max-h-80 overflow-y-auto"
+          class="rounded-2xl border border-sky-100 bg-sky-50/40 px-3 py-2 max-h-80 overflow-y-auto"
         >
           <!-- deadlines go here -->
         </div>
@@ -250,7 +285,23 @@
         id="brain-dump"
         rows="8"
         placeholder="e.g. I'm worried about the ERC deadline and HHH analysis overlap. Possible next step: block 2x 25-minute sessions just for ERC today."
-        class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+        class="w-full rounded-2xl border border-sky-100 bg-sky-50/60 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+      ></textarea>
+    </section>
+
+    <!-- Lab log -->
+    <section class="mt-6">
+      <h2 class="text-xs font-semibold tracking-wide text-slate-700 uppercase mb-2">
+        Lab log / Notes
+      </h2>
+      <p class="text-xs text-slate-500 mb-2">
+        Short notes on analysis progress, detector work, ideas, or questions to revisit.
+      </p>
+      <textarea
+        id="lab-log"
+        rows="6"
+        placeholder="e.g. Checked new HHH6b fit with updated k₃–k₄ grid; need to rerun toys with tighter proton selection."
+        class="w-full rounded-2xl border border-sky-100 bg-sky-50/60 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
       ></textarea>
     </section>
 
@@ -268,7 +319,7 @@
             id="finished-today"
             rows="6"
             placeholder="e.g. Completed the ERC introduction, fixed the SuperChic bug, and went for a 30-minute walk."
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="w-full rounded-2xl border border-sky-100 bg-sky-50/40 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           ></textarea>
         </div>
         <div>
@@ -279,7 +330,7 @@
             id="start-tomorrow"
             rows="6"
             placeholder="e.g. First 25-minute block on HHH systematics, then 25 minutes on ERC methodology section."
-            class="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
+            class="w-full rounded-2xl border border-sky-100 bg-sky-50/40 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500"
           ></textarea>
         </div>
       </div>
@@ -324,8 +375,13 @@
       const deadlineAddBtn = document.getElementById('deadline-add-btn');
 
       const brainDumpTextarea = document.getElementById('brain-dump');
+      const labLogTextarea = document.getElementById('lab-log');
       const finishedTodayTextarea = document.getElementById('finished-today');
       const startTomorrowTextarea = document.getElementById('start-tomorrow');
+
+      const exportBtn = document.getElementById('export-btn');
+      const importBtn = document.getElementById('import-btn');
+      const importFileInput = document.getElementById('import-file');
 
       function makeId() {
         return (
@@ -376,6 +432,7 @@
           smallTasks: [],
           importantDeadlines: [],
           brainDump: '',
+          labLog: '',
           finishedToday: '',
           startTomorrow: '',
         };
@@ -427,6 +484,7 @@
           if (!day.smallTasks) day.smallTasks = [];
           if (!day.importantDeadlines) day.importantDeadlines = [];
           if (typeof day.brainDump !== 'string') day.brainDump = '';
+          if (typeof day.labLog !== 'string') day.labLog = '';
           if (typeof day.finishedToday !== 'string') day.finishedToday = '';
           if (typeof day.startTomorrow !== 'string') day.startTomorrow = '';
           ['must', 'quick', 'optional'].forEach((k) => {
@@ -488,7 +546,7 @@
 
       function styleMainRow(rowEl, task) {
         const baseClasses =
-          'rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-4 flex flex-col gap-2 transition-opacity';
+          'rounded-2xl border border-sky-100 bg-sky-50/60 px-4 py-4 flex flex-col gap-2 transition-opacity';
         rowEl.className = baseClasses + (task.done ? ' opacity-60' : '');
       }
 
@@ -677,6 +735,11 @@
         brainDumpTextarea.value = day.brainDump || '';
       }
 
+      function renderLabLog(day) {
+        if (!labLogTextarea) return;
+        labLogTextarea.value = day.labLog || '';
+      }
+
       function renderReflection(day) {
         finishedTodayTextarea.value = day.finishedToday || '';
         startTomorrowTextarea.value = day.startTomorrow || '';
@@ -718,6 +781,10 @@
           ? 'written'
           : 'empty';
 
+        const labStatus = (day.labLog || '').trim().length
+          ? 'written'
+          : 'empty';
+
         summaryTextSpan.textContent =
           'Focus: ' +
           focusDone +
@@ -732,7 +799,9 @@
           '/' +
           totalDead +
           ' done · Brain dump: ' +
-          brainStatus;
+          brainStatus +
+          ' · Lab log: ' +
+          labStatus;
       }
 
       function render() {
@@ -742,6 +811,7 @@
         renderSmallTasks(day);
         renderDeadlines(day);
         renderBrainDump(day);
+        renderLabLog(day);
         renderReflection(day);
         renderSummary(day);
       }
@@ -871,6 +941,15 @@
           renderSummary(day);
         });
 
+        if (labLogTextarea) {
+          labLogTextarea.addEventListener('input', function () {
+            const day = getDay(state.selectedDate);
+            day.labLog = labLogTextarea.value;
+            saveStore();
+            renderSummary(day);
+          });
+        }
+
         finishedTodayTextarea.addEventListener('input', function () {
           const day = getDay(state.selectedDate);
           day.finishedToday = finishedTodayTextarea.value;
@@ -902,6 +981,76 @@
           if (!dateInput.value) return;
           setSelectedDate(dateInput.value);
         });
+
+        if (exportBtn) {
+          exportBtn.addEventListener('click', function () {
+            try {
+              const payload = {
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                data: {
+                  days: state.days,
+                  settings: state.settings,
+                },
+              };
+              const blob = new Blob([JSON.stringify(payload, null, 2)], {
+                type: 'application/json',
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'daily-focus-3-backup-' + getTodayString() + '.json';
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            } catch (e) {
+              console.warn('Export failed', e);
+              alert('Sorry, export failed.');
+            }
+          });
+        }
+
+        if (importBtn && importFileInput) {
+          importBtn.addEventListener('click', function () {
+            importFileInput.click();
+          });
+
+          importFileInput.addEventListener('change', function () {
+            const file = importFileInput.files && importFileInput.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              try {
+                const text = event.target.result;
+                const parsed = JSON.parse(text);
+                const payload = parsed && parsed.data ? parsed.data : parsed;
+                if (!payload || typeof payload !== 'object') {
+                  throw new Error('Invalid file');
+                }
+                if (!payload.days || typeof payload.days !== 'object') {
+                  throw new Error('Missing days');
+                }
+                state.days = payload.days;
+                state.settings = payload.settings || { fontSize: 'medium' };
+                applyFontSize();
+                saveStore();
+                if (!state.selectedDate) {
+                  state.selectedDate = getTodayString();
+                }
+                ensureDay(state.selectedDate);
+                render();
+                alert('Import successful.');
+              } catch (e) {
+                console.error('Import failed', e);
+                alert('Could not import this file. Is it a valid Daily Focus 3 export?');
+              } finally {
+                importFileInput.value = '';
+              }
+            };
+            reader.readAsText(file);
+          });
+        }
       }
 
       function init() {
